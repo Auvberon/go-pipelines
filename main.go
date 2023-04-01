@@ -27,8 +27,8 @@ func postAlbums (c *gin.Context){
 	var newAlbum album
 
 	if err := c.BindJSON(&newAlbum); err != nil {
-		return
-	}
+        return
+    }
 
 	albums = append(albums, newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
