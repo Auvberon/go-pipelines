@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.9.0
+	github.com/joho/godotenv v1.5.1
 	github.com/rs/xid v1.4.0
 	github.com/stretchr/testify v1.8.1
 )

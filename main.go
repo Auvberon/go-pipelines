@@ -4,6 +4,9 @@ import(
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"os"
+	"fmt"
 )
 
 type album struct {
@@ -47,9 +50,23 @@ func getAlbumByID(c *gin.Context) {
 }
 
 func main(){
+	env := os.Getenv("environment")
+	if env == "" {
+	   env = "local"
+	}
+	err := godotenv.Load(".env")
+	if err != nil {
+	   fmt.Printf("Error loading .env file: %v", err)
+	}
+	listenAddress := os.Getenv("ADDRESS")
+	if listenAddress == "" {
+	   listenAddress = ":8080"
+	}
+ 
+
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
 	router.POST("/albums", postAlbums)
 	router.GET("/albums/:id", getAlbumByID)
-	router.Run("localhost:8080")
+	router.Run(listenAddress)
 }
