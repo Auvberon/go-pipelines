@@ -48,3 +48,32 @@ func TestPostAlbums(t *testing.T){
 	r.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
+
+func TestGetAlbumById(t *testing.T){
+	r := SetUpRouter()
+	r.GET("/albums/1", getAlbums)
+	req, _ := http.NewRequest("GET", "/albums/1", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	var albums []album
+	json.Unmarshal(w.Body.Bytes(), &albums)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.NotEmpty(t, albums)
+}
+
+func TestGetAlbumByIdNotFound(t *testing.T){
+	r := SetUpRouter()
+
+	req, err := http.NewRequest("GET", "/albums/999", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNotFound, w.Code)
+	assert.NotEmpty(t, albums)
+}
